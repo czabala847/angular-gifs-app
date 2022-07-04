@@ -9,7 +9,9 @@ export class GifsService {
   private _history: string[] = [];
   public gifs: Gif[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this._history = JSON.parse(localStorage.getItem('history')!) || [];
+  }
 
   public add(query: string = '') {
     query = query.trim().toLowerCase();
@@ -17,6 +19,8 @@ export class GifsService {
     if (!this._history.includes(query)) {
       this._history.unshift(query);
       this._history = this._history.splice(0, 10);
+
+      localStorage.setItem('history', JSON.stringify(this._history));
 
       this.http
         .get<GifResponse>(
