@@ -8,8 +8,13 @@ export class GifsService {
 
   constructor() {}
 
-  public add(query: string) {
-    this._history.unshift(query);
+  public add(query: string = '') {
+    query = query.trim().toLowerCase();
+
+    if (!this._history.includes(query)) {
+      this._history.unshift(query);
+      this._history = this._history.splice(0, 10);
+    }
   }
 
   get history() {
